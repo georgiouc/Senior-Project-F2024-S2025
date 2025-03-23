@@ -1,2 +1,46 @@
 # Senior-Project-F2024-S2025
 Senior Project ~ F2024-S2025, PCAP Analysis on IoT Attacks
+
+
+How to setup Miner :
+--------------------------------------------------------------------------------------
+Disclaimer: Make sure Python is installed, is in environment path, and pip is working
+
+
+
+
+1) First create virtual environment with python to install modules.
+cd into Miner Folder and run : $python -m venv {NameOfYourVirtualEnvironment}
+activate using: "$source {PathToMiner}/{NameOfYourVirtualEnvironment}/bin/activate"
+                or
+                ". {PathToMiner}/{NameOfYourVirtualEnvironment}/bin/activate".
+
+when in venv:
+Install pip modules, run $pip install -r requirements.txt
+
+Do "pip list" to check installed modules
+Modules that should be Listed:
+
+dpkt
+pandas
+scapy
+scipy
+tqdm
+
+
+2) Install tcpdump
+
+# Debian/Ubuntu
+sudo apt update && sudo apt install -y tcpdump
+
+# Arch Linux
+sudo pacman -S --noconfirm tcpdump
+
+# Fedora
+sudo dnf install -y tcpdump
+
+# Mac (Homebrew)
+brew install tcpdump
+
+# Windows (WinDump)
+# Download from: https://www.winpcap.org/windump/

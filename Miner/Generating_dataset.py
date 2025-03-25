@@ -13,7 +13,7 @@ if __name__ == '__main__':
     start = time.time()
     print("========== CIC IoT feature extraction ==========")
 
-    pcapfiles = ["../PCAP/Backdoor_Malware.pcap"] #Place your pcap files here.
+    pcapfiles = [os.path.join("../PCAP", f) for f in os.listdir("../PCAP") if f.endswith(".pcap")] #Place your pcap files here.
     subfiles_size = 10 # MB
     split_directory = 'split_temp/'
     destination_directory = 'output/'

@@ -65,7 +65,7 @@ if __name__ == '__main__':
         for f in tqdm(csv_subfiles):
             try:
                 d = pd.read_csv(destination_directory + f)
-                d.to_csv("../CSV/" + os.path.basename(pcap_file) + '.csv', header=mode=='w', index=False, mode=mode)
+                d.to_csv("../CSV/" + os.path.basename(pcap_file).split('.')[0] + '.csv', header=mode=='w', index=False, mode=mode)
                 mode='a'
             except:
                 pass

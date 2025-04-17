@@ -1,7 +1,7 @@
 import pandas
 import os
 
-csv_path = "CSV/example.csv"
+csv_path = "../../CSV/example.csv"
 csv_filename = os.path.basename(csv_path).split(".")[0]
 df = pandas.read_csv(csv_path)
 
@@ -32,11 +32,11 @@ occurrence_df = pandas.DataFrame(occurrence_data, columns=["Feature", "Present"]
 print(occurrence_df)
 
 # Create Save Directory
-os.makedirs("occurrences", exist_ok=True)
+os.makedirs("Occurrences", exist_ok=True)
 
 # Create Output Path
-occurence_csv_path = f"occurrences/{csv_filename}_occurrence.csv"
-occurence_tex_path = f"occurrences/{csv_filename}_occurrence.tex"
+occurence_csv_path = f"Occurrences/{csv_filename}_occurrence.csv"
+occurence_tex_path = f"Occurrences/{csv_filename}_occurrence.tex"
 
 # Save to CSV
 occurrence_df.to_csv(occurence_csv_path, index=False)

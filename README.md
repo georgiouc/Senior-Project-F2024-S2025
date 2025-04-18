@@ -2,45 +2,72 @@
 Senior Project ~ F2024-S2025, PCAP Analysis on IoT Attacks
 
 
-How to setup Miner :
---------------------------------------------------------------------------------------
-Disclaimer: Make sure Python is installed, is in environment path, and pip is working
+# How to setup Miner :
 
 
 
 
-1) First create virtual environment with python to install modules.
-cd into Miner Folder and run : $python -m venv {NameOfYourVirtualEnvironment}
-activate using: "$source {PathToMiner}/{NameOfYourVirtualEnvironment}/bin/activate"
-                or
-                ". {PathToMiner}/{NameOfYourVirtualEnvironment}/bin/activate".
+## 1) Create virtual environment with python to install pip modules.
+Disclaimer: <br>
+Make sure Python is installed, is in environment path, and pip is working
 
-when in venv:
-Install pip modules, run $pip install -r requirements.txt
+Navigate into Miner Folder and run :
+```bash
+$python -m venv {NameOfYourVirtualEnvironment}
+```
+activate using:
+```bash
+$source {PathToMiner}/{NameOfYourVirtualEnvironment}/bin/activate
+```
+or
+```bash
+. {PathToMiner}/{NameOfYourVirtualEnvironment}/bin/activate
+```
 
-Do "pip list" to check installed modules
-Modules that should be Listed:
-
-dpkt
-pandas
-scapy
-scipy
-tqdm
 
 
-2) Install tcpdump
+### When in (venv):
+Install pip modules, using:
+```bash
+$pip install -r requirements.txt
+```
+## Modules that should be installed:
+- dpkt
+- pandas
+- scapy
+- scipy
+- tqdm
+- Jinja2
 
-# Debian/Ubuntu
+#### To check installed modules, run:
+
+```bash
+pip list
+```
+
+
+----------------------------------------------------------------------------------------
+<br>
+
+# 2) Install tcpdump
+<br>
+
+### Debian/Ubuntu
+```bash
 sudo apt update && sudo apt install -y tcpdump
-
-# Arch Linux
+```
+### Arch Linux
+```bash
 sudo pacman -S --noconfirm tcpdump
-
-# Fedora
+```
+### Fedora
+```bash
 sudo dnf install -y tcpdump
-
-# Mac (Homebrew)
+```
+### Mac (Homebrew)
+```bash
 brew install tcpdump
+```
+### Windows (WinDump)
+#### Download from: https://www.winpcap.org/windump/
 
-# Windows (WinDump)
-# Download from: https://www.winpcap.org/windump/

@@ -1,0 +1,21 @@
+This python script was developed to compare the columns headers (features) of multiple CSV files. t takes one "baseline" dataframe, which is this case is our csv files that were compiled using the current project code. Comparing it to other Project's CSV files can give us an inside on which features they are extracting, giving us more suggestions on features to implement into out feature extraction.
+
+It takes input from a command line (command line arguments), needs at least two CSV paths, first being the baseline, the rest are for comparing.
+
+It extracts the baseline column headers, and for each feature in the baseline, it checks :
+                            -If the feature exists in comparison file: denotes with a tick
+                                            or
+                                  demotes with an "X"
+
+                            -Checks for extra features, in the comparison files that are not in baseline.
+
+Then it builds a comparison table that shows:
+
+                            -Which features exist in which files
+                            -Which features are missing
+                            -Any extra features that only exist in comparison files
+
+Saves the results in Comparison Folder as:
+
+                                    - CSV file for easy viewing
+                                    - LaTeX-formatted table for use in reports or papers.

@@ -53,13 +53,17 @@ out_tex = f"Comparison/comparison_to_{baseline_name}.tex"
 comparison_df.to_csv(out_csv, index=False)
 
 # Prepare LaTeX version
-comparison_df['Feature'] = comparison_df['Feature'].apply(lambda x: x.replace('_', r'\_'))
+comparison_df['Feature'] = comparison_df['Feature'].apply(
+    lambda x: x.replace('_', r'\_').replace('[', r'\texttt{[').replace(']', r']}'))
+
 comparison_df.replace({'✓': r'\checkmark', '✗': r'\ding{55}'}, inplace=True)
 
 latex_table = comparison_df.to_latex(index=False, escape=False)
 latex_table = "\\resizebox{\\textwidth}{!}{" + latex_table + "}"
 
+# Save to output LaTeX file
 with open(out_tex, 'w') as f:
     f.write(latex_table)
 
 print(f"✅ Comparison complete. Files saved as:\n- {out_csv}\n- {out_tex}")
+

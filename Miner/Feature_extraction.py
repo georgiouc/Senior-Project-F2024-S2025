@@ -722,19 +722,19 @@ class Feature_extraction():
             avg_flow_duration = float(f"{(total_flow_duration / len(completed_flows)):.6f}")
             
             # Log detailed flow information
-            print("\nDetailed Flow Statistics:")
-            print(f"Total unique flows: {flow_count}")
-            print(f"Completed flows: {len(completed_flows)}")
-            print(f"Active flows flushed: {active_flows_count}")
-            print(f"Max flow duration: {max_flow_duration:.6f} seconds")
-            print(f"Average flow duration: {avg_flow_duration:.6f} seconds")
-            print(f"Total flow duration: {total_flow_duration:.6f} seconds")
+            #print("\nDetailed Flow Statistics:")
+            #print(f"Total unique flows: {flow_count}")
+            #print(f"Completed flows: {len(completed_flows)}")
+            #print(f"Active flows flushed: {active_flows_count}")
+            #print(f"Max flow duration: {max_flow_duration:.6f} seconds")
+            #print(f"Average flow duration: {avg_flow_duration:.6f} seconds")
+            #print(f"Total flow duration: {total_flow_duration:.6f} seconds")
             
             # Print some example flow durations
-            print("\nExample Flow Durations:")
-            for flow in completed_flows[:5]:  # Show first 5 flows
-                print(f"Flow {flow['flow']} ({flow['direction']}): {flow['duration']:.6f} seconds")
-        else:
-            print("No flows were completed or flushed")
-        return True
+            #print("\nExample Flow Durations:")
+            #for flow in completed_flows[:5]:  # Show first 5 flows
+                #print(f"Flow {flow['flow']} ({flow['direction']}): {flow['duration']:.6f} seconds")
+        #else:
+            #print("No flows were completed or flushed")
+        #return True
 

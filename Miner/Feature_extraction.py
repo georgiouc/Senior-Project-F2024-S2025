@@ -21,8 +21,8 @@ class Feature_extraction():
                    ,"psh_flag_number","ack_flag_number","ece_flag_number","cwr_flag_number",
                    "ack_count", "syn_count", "fin_count","rst_count",           
                    "HTTP", "HTTPS", "DNS", "Telnet","SMTP", "SSH", "IRC", "TCP", "UDP", "DHCP","ARP", "ICMP", "IGMP", "IPv", "LLC",
-        "Tot sum", "Min", "Max", "AVG", "Std","Tot size", "IAT", "Number", "Variance", "Duration",
-        "Max_Flow_Duration", "Avg_Flow_Duration", "Flow_Count"]
+                   "Tot sum", "Min", "Max", "AVG", "Std","Tot size", "IAT", "Number", "Variance", "Duration",
+                   "Max_Flow_Duration", "Avg_Flow_Duration", "Flow_Count"]
     
     
     def pcap_evaluation(self,pcap_file,csv_file_name):
@@ -33,8 +33,8 @@ class Feature_extraction():
                    ,"psh_flag_number","ack_flag_number","ece_flag_number","cwr_flag_number",
                    "ack_count", "syn_count", "fin_count","rst_count",           
                    "HTTP", "HTTPS", "DNS", "Telnet","SMTP", "SSH", "IRC", "TCP", "UDP", "DHCP","ARP", "ICMP", "IGMP", "IPv", "LLC",
-        "Tot sum", "Min", "Max", "AVG", "Std","Tot size", "IAT", "Number", "Variance", "Duration",
-        "Max_Flow_Duration", "Avg_Flow_Duration", "Flow_Count"]
+                   "Tot sum", "Min", "Max", "AVG", "Std","Tot size", "IAT", "Number", "Variance", "Duration",
+                   "Max_Flow_Duration", "Avg_Flow_Duration", "Flow_Count"]
         base_row = {c:[] for c in columns}
         #print(base_row)
         start = time.time()
@@ -252,6 +252,7 @@ class Feature_extraction():
                     con_time = Connectivity_features_time(ip)
                     time_to_live= con_time.time_to_live() # time_to_live of packet
                     potential_packet = ip.data
+                    
                     # Update Duration based on flow information ------------------------------------------------------------------------------------------------
                     if flow_duration > Duration:
                         Duration = flow_duration
@@ -349,6 +350,7 @@ class Feature_extraction():
                         src_port = con_basic.get_source_port()
                         dst_port = con_basic.get_destination_port()
                         header_len = con_basic.get_header_len()
+                        #print('Header Length TCP : ', header_len)
                         if dst_port in dst_port_packet_count.keys():
                             dst_packet_count[dst_port] = dst_port_packet_count[dst_port] + 1
                         else:
@@ -368,7 +370,8 @@ class Feature_extraction():
                         try:
                             http_info = dpkt.http.Response(ip.data)
                             connection_status = http_info.status
-                        except:
+                        except: 
+                            # print("No status")
                             connection_status = 0
 
                         flow = sorted([(src_ip, src_port), (dst_ip, dst_port)])
@@ -383,13 +386,23 @@ class Feature_extraction():
                      
                         if tcpflows.get(flow):
                             tcpflows[flow].append(flow_data)
+                            # comparing Flow state based on its flags
+                            #ack_count, syn_count, fin_count, urg_count, rst_count = tcp_flow_flags[flow]
+                            #ack_count,syn_count,fin_count,urg_count,rst_count = compare_flow_flags(flag_valus,ack_count,syn_count,fin_count,urg_count,rst_count)
+                         
+                            #tcp_flow_flags[flow] = [ack_count, syn_count, fin_count, urg_count, rst_count]
                         else:
                             tcpflows[flow] = [flow_data]
-
+                            #ack_count,syn_count,fin_count,urg_count,rst_count = compare_flow_flags(flag_valus, ack_count, syn_count, fin_count, urg_count, rst_count)
+        
+                            #tcp_flow_flags[flow] = [ack_count,syn_count,fin_count,urg_count,rst_count]
                         packets = tcpflows[flow]
+                        #Get the number of packets in that specific flow
                         number_of_packets_per_trabsaction = len(packets)
                         flow_byte, flow_duration,max_duration,min_duration,sum_duration,average_duration,std_duration,idle_time,active_time = get_flow_info(tcpflows, flow)
+                        #Calculates the no of packets for each flow vice -versa, and the total no. of bytes
                         src_to_dst_pkt, dst_to_src_pkt, src_to_dst_byte, dst_to_src_byte = get_src_dst_packets(tcpflows, flow)
+                        # calculate_incoming_connections(incoming_packets_src, incoming_packets_dst, src_port, dst_port, src_ip, dst_ip)    
 
                     # Unified flow duration tracking for both TCP and UDP
                     if type(potential_packet) == dpkt.tcp.TCP or type(potential_packet) == dpkt.udp.UDP:
@@ -582,15 +595,14 @@ class Feature_extraction():
                            "IPv": ipv,                             
                            "LLC": llc,                             
 
-                           "Tot sum": 0,                           
+                           "Tot sum": 0,                           #This value will be reassigned when writing the csv by using the Tot Size attribute 
                            "Min": 0,                               
                            "Max": 0,                               
                            "AVG": 0,                               
                            "Std": 0,                               
                            "Tot size": ethernet_frame_size,         
                            "IAT": IAT, 
-                           "Number": 1,                            
-
+                           "Number": 1,                            #Number of packets
                            "Variance":0,   
                            "Duration": Duration,  # Current flow's duration in seconds
                            "Max_Flow_Duration": max_flow_duration,  # Longest flow duration in seconds

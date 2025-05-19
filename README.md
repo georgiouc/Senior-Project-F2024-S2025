@@ -26,44 +26,44 @@ Make sure Python is installed, is added to the system's PATH environment variabl
 >```bash
 >python3 -m venv myvenv
 >```
->**Note:** 'myenv' is the name of the virtual environment, you can change it to whatever you like.
+>**Note:** 'myvenv' is the name of the virtual environment, you can change it to whatever you like.
 
 Activate using:
 ```bash
-source myenv/bin/activate
+source myvenv/bin/activate
 ```
 or (alternative for advanced users familiar with the syntax):
 ```bash
-. myenv/bin/activate
+. myvenv/bin/activate
 ```
 ### 🔹 On Windows
 
 >```bash
 >python -m venv myvenv
 >```
->**Note:** 'myenv' is the name of the virtual environment, you can change it.
+>**Note:** 'myvenv' is the name of the virtual environment, you can change it.
 
 Activate using:
 ```bash
-myenv\Scripts\activate
+myvenv\Scripts\activate
 ```
 or (alternative for advanced users familiar with the syntax):
 ```bash
-myenv\Scripts\activate.bat
+myvenv\Scripts\activate.bat
 ```
 ### 🔹 On Windows (PowerShell)
 Navigate into repository folder and run:
->**Note:** 'myenv' is the name of the virtual environment, you can change it.
+>**Note:** 'myvenv' is the name of the virtual environment, you can change it.
 ```bash
 python -m venv myvenv
 ```
 Activate using:
 ```bash
-myenv\Scripts\Activate.ps1
+myvenv\Scripts\Activate.ps1
 ```
 or (alternative for advanced users familiar with the syntax):
 ```bash
-myenv\Scripts\Activate
+myvenv\Scripts\Activate
 ```
 
 ## When in (venv):

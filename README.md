@@ -13,14 +13,13 @@ git clone https://github.com/georgiouc/Senior-Project-F2024-S2025.git
 ```bash
 cd Senior-Project-F2024-S2025
 ```
-### 3) Create a Python virtual environment 
-
 >Disclaimer: 
-Make sure Python is installed, is added to the system's PATH environment variable, and pip and venv are installed.
+Make sure Python is installed, is added to the system's PATH environment variable, and pip and venv are also installed.
 <br>**Note:** If you are on Linux, you may need to install the `python3-pip` & `python3-venv` package using your package manager. For example, on Ubuntu, you can run:
 >```bash
 >sudo apt install python3 python3-pip python3-venv
 >```
+### 3) Create a Python virtual environment 
 
 ### 🔹 On Linux/ macOS/ WSL:
 

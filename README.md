@@ -1,21 +1,33 @@
-# Senior-Project-F2024-S2025
-Senior Project ~ F2024-S2025, PCAP Analysis on IoT Attacks
 
+#  PCAP Analysis on IoT Attacks
+## Senior Project ~ F2024-S2025
+This guide will help you set up the environment for running the PCAP analysis on IoT attacks. Follow the steps below to ensure a smooth installation process. 
 
-# How to setup Miner :
-
-
-
-
-## 1) Create virtual environment with Python & Install pip modules.
-Disclaimer:
-Make sure Python is installed, is added to the system's PATH environment variable, and pip is working
-### 🔹 On Linux/macOS:
-Navigate into repository folder and run:
->**Note:** 'myenv' is the name of the virtual environment, you can change it.
+## Installation Guide :
+### 1) Clone the repository from GitHub.
 ```bash
-python3 -m venv myvenv
+git clone https://github.com/georgiouc/Senior-Project-F2024-S2025.git
 ```
+### 2) Navigate into the cloned repository folder.
+```bash
+cd Senior-Project-F2024-S2025
+```
+### 3) Create a Python virtual environment and install the required pip modules.
+
+>Disclaimer: 
+Make sure Python is installed, is added to the system's PATH environment variable, and pip and venv are installed.
+<br>**Note:** If you are on Linux, you may need to install the `python3-pip` & `python3-venv` package using your package manager. For example, on Ubuntu, you can run:
+>```bash
+>sudo apt install python3 python3-pip python3-venv
+>```
+
+### 🔹 On Linux/ macOS/ WSL:
+
+>```bash
+>python3 -m venv myvenv
+>```
+>**Note:** 'myenv' is the name of the virtual environment, you can change it to whatever you like.
+
 Activate using:
 ```bash
 source myenv/bin/activate
@@ -25,11 +37,12 @@ or (alternative for advanced users familiar with the syntax):
 . myenv/bin/activate
 ```
 ### 🔹 On Windows
-Navigate into repository folder and run:
+
+>```bash
+>python -m venv myvenv
+>```
 >**Note:** 'myenv' is the name of the virtual environment, you can change it.
-```bash
-python -m venv myvenv
-```
+
 Activate using:
 ```bash
 myenv\Scripts\activate

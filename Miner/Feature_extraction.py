@@ -10,19 +10,24 @@ from Layered_features import L3, L4, L2, L1
 from Supporting_functions import get_protocol_name, get_flow_info, get_flag_values, compare_flow_flags, \
     get_src_dst_packets, calculate_incoming_connections, \
     calculate_packets_counts_per_ips_proto, calculate_packets_count_per_ports_proto
-    
+import numpy as np
 from tqdm import tqdm
 import time
 import datetime 
 
 class Feature_extraction():
-    columns = ["ts","Header_Length","Protocol Type","Time_To_Live","Rate", 
-                   "fin_flag_number","syn_flag_number","rst_flag_number"
-                   ,"psh_flag_number","ack_flag_number","ece_flag_number","cwr_flag_number",
-                   "ack_count", "syn_count", "fin_count","rst_count",           
-                   "HTTP", "HTTPS", "DNS", "Telnet","SMTP", "SSH", "IRC", "TCP", "UDP", "DHCP","ARP", "ICMP", "IGMP", "IPv", "LLC",
-                   "Tot sum", "Min", "Max", "AVG", "Std","Tot size", "IAT", "Number", "Variance", "Duration",
-                   "Max_Flow_Duration", "Avg_Flow_Duration", "Flow_Count"]
+    columns = [
+        "ts","Header_Length","Protocol Type","Time_To_Live","Rate", 
+        "fin_flag_number","syn_flag_number","rst_flag_number"
+        ,"psh_flag_number","ack_flag_number","ece_flag_number","cwr_flag_number",
+        "ack_count", "syn_count", "fin_count","rst_count",           
+        "HTTP", "HTTPS", "DNS", "Telnet","SMTP", "SSH", "IRC", "TCP", "UDP", "DHCP","ARP", "ICMP", "IGMP", "IPv", "LLC",
+        "Tot sum", "Min", "Max", "AVG", "Std","Tot size", "IAT", "Number", "Variance", "Duration",
+        "Max_Flow_Duration", "Avg_Flow_Duration", "Flow_Count",
+        # Add dynamic/statistical features
+        "Cov_PacketSize_IAT", "Cov_PacketSize_FlowDuration", "Cov_PacketCount_IAT",
+        "Corr_PacketSize_IAT", "Corr_PacketSize_FlowDuration", "Corr_PacketCount_IAT"
+    ]
     
     
     def pcap_evaluation(self,pcap_file,csv_file_name):
@@ -607,7 +612,10 @@ class Feature_extraction():
                            "Duration": Duration,  # Current flow's duration in seconds
                            "Max_Flow_Duration": max_flow_duration,  # Longest flow duration in seconds
                            "Avg_Flow_Duration": avg_flow_duration,  # Average flow duration in seconds
-                           "Flow_Count": flow_count  # Number of unique flows seen
+                           "Flow_Count": flow_count,  # Number of unique flows seen
+                           # Dynamic features
+                           "Cov_PacketSize_IAT": 0, "Cov_PacketSize_FlowDuration": 0, "Cov_PacketCount_IAT": 0,
+                           "Corr_PacketSize_IAT": 0, "Corr_PacketSize_FlowDuration": 0, "Corr_PacketCount_IAT": 0
                           }
                 for c in base_row.keys():
                     base_row[c].append(new_row[c])
@@ -625,27 +633,48 @@ class Feature_extraction():
         n_rows = 10
         df_summary_list = []
         while last_row<len(processed_df):
-            #Get the first n_processed rows
-            sliced_df = processed_df[last_row:last_row+n_rows]
+            # Get the first n_processed rows
+            window_df = processed_df[last_row:last_row+n_rows]
+            # Dynamic/statistical features (use window_df, not collapsed mean row)
+            dy = Dynamic_features()
+            # Covariance and correlation between packet size and IAT
+            if len(window_df['Tot size']) > 1 and len(window_df['IAT']) > 1:
+                cov_ps_iat = np.cov(window_df['Tot size'], window_df['IAT'])[0,1]
+                corr_ps_iat = np.corrcoef(window_df['Tot size'], window_df['IAT'])[0,1]
+            else:
+                cov_ps_iat = 0
+                corr_ps_iat = 0
+            # Covariance and correlation between packet size and flow duration
+            if len(window_df['Tot size']) > 1 and len(window_df['Duration']) > 1:
+                cov_ps_fd = np.cov(window_df['Tot size'], window_df['Duration'])[0,1]
+                corr_ps_fd = np.corrcoef(window_df['Tot size'], window_df['Duration'])[0,1]
+            else:
+                cov_ps_fd = 0
+                corr_ps_fd = 0
+            # Covariance and correlation between packet count and IAT
+            if len(window_df['Number']) > 1 and len(window_df['IAT']) > 1:
+                cov_pc_iat = np.cov(window_df['Number'], window_df['IAT'])[0,1]
+                corr_pc_iat = np.corrcoef(window_df['Number'], window_df['IAT'])[0,1]
+            else:
+                cov_pc_iat = 0
+                corr_pc_iat = 0
+            # Now collapse to mean row for other features
+            sliced_df = pd.DataFrame(window_df.mean()).T
             #Get the mode of the protocol type
-            sliced_df_protocol_type_mode = pd.DataFrame(sliced_df['Protocol Type'].mode())
-            sum_of_ack_count = (sliced_df["ack_count"].sum())
-            sum_of_syn_count = (sliced_df['syn_count'].sum())
-            sum_of_fin_count = (sliced_df['fin_count'].sum())
-            sum_of_rst_count = (sliced_df['rst_count'].sum())
-            total_sum_of_lengths = (sliced_df['Tot size'].sum())
-            min_packet_length = (sliced_df['Tot size'].min())
-            max_packet_length = (sliced_df['Tot size'].max())
-            mean_packet_length = (sliced_df['Tot size'].mean())
-            std_packet_length = (sliced_df['Tot size'].std())
-            variance_packet_lengths = (sliced_df['Tot size'].var())
-            #covariance_packet_lenghts = (sliced_df['Tot size'].cov())
-            num_of_packets = (sliced_df['Number'].sum())
-            duration_time_interval = (sliced_df['ts'].max() - sliced_df['ts'].min())
+            sliced_df_protocol_type_mode = pd.DataFrame(window_df['Protocol Type'].mode())
+            sum_of_ack_count = (window_df["ack_count"].sum())
+            sum_of_syn_count = (window_df['syn_count'].sum())
+            sum_of_fin_count = (window_df['fin_count'].sum())
+            sum_of_rst_count = (window_df['rst_count'].sum())
+            total_sum_of_lengths = (window_df['Tot size'].sum())
+            min_packet_length = (window_df['Tot size'].min())
+            max_packet_length = (window_df['Tot size'].max())
+            mean_packet_length = (window_df['Tot size'].mean())
+            std_packet_length = (window_df['Tot size'].std())
+            variance_packet_lengths = (window_df['Tot size'].var())
+            num_of_packets = (window_df['Number'].sum())
+            duration_time_interval = (window_df['ts'].max() - window_df['ts'].min())
 
-            #print(sliced_df_protocol_type_mode)
-            #Get the mean of the tables
-            sliced_df = pd.DataFrame(sliced_df.mean()).T# mean
             #replace the columns
             sliced_df['Protocol Type'] = sliced_df_protocol_type_mode
             sliced_df['ack_count'] = sum_of_ack_count
@@ -658,17 +687,20 @@ class Feature_extraction():
             sliced_df['AVG'] = mean_packet_length
             sliced_df['Std'] = std_packet_length
             sliced_df['Number'] = num_of_packets
-            sliced_df['Rate'] = num_of_packets/duration_time_interval
+            sliced_df['Rate'] = num_of_packets/duration_time_interval if duration_time_interval != 0 else 0
             sliced_df['Variance'] = variance_packet_lengths
-            #sliced_df['Covariance'] = covariance_packet_lenghts
-            
             # Add duration-related summary statistics
-            sliced_df['Duration'] = duration_time_interval  # This is the time window duration
-            sliced_df['Max_Flow_Duration'] = sliced_df['Max_Flow_Duration'].max()  # Max flow duration in this window
-            sliced_df['Avg_Flow_Duration'] = sliced_df['Avg_Flow_Duration'].mean()  # Average flow duration in this window
-            sliced_df['Flow_Count'] = sliced_df['Flow_Count'].sum()  # Total flows in this window
-        
-
+            sliced_df['Duration'] = duration_time_interval
+            sliced_df['Max_Flow_Duration'] = window_df['Max_Flow_Duration'].max()
+            sliced_df['Avg_Flow_Duration'] = window_df['Avg_Flow_Duration'].mean()
+            sliced_df['Flow_Count'] = window_df['Flow_Count'].sum()
+            # Add dynamic feature values to summary
+            sliced_df['Cov_PacketSize_IAT'] = cov_ps_iat
+            sliced_df['Cov_PacketSize_FlowDuration'] = cov_ps_fd
+            sliced_df['Cov_PacketCount_IAT'] = cov_pc_iat
+            sliced_df['Corr_PacketSize_IAT'] = corr_ps_iat
+            sliced_df['Corr_PacketSize_FlowDuration'] = corr_ps_fd
+            sliced_df['Corr_PacketCount_IAT'] = corr_pc_iat
             df_summary_list.append(sliced_df)
             last_row += n_rows
         processed_df = pd.concat(df_summary_list).reset_index(drop=True)

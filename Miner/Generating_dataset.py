@@ -7,6 +7,7 @@ from tqdm import tqdm
 from multiprocessing import Process
 import numpy as np
 import pandas as pd
+import shutil
 
 if __name__ == '__main__':
 
@@ -82,3 +83,11 @@ if __name__ == '__main__':
 
     end = time.time()
     print(f'Elapsed Time = {(end-start)}s')
+
+    # Call the categorization script for modularity (portable, cross-platform, robust path)
+    import sys
+    import subprocess
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    categorize_path = os.path.join(script_dir, 'Categorize_CSVs.py')
+    print(f'==== Running CSV categorization script: {categorize_path} ===')
+    subprocess.run([sys.executable, categorize_path], check=True)

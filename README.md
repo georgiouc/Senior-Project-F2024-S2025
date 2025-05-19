@@ -8,21 +8,23 @@ Senior Project ~ F2024-S2025, PCAP Analysis on IoT Attacks
 
 
 ## 1) Create virtual environment with python to install pip modules.
-Disclaimer: <br>
-Make sure Python is installed, is in environment path, and pip is working
+Disclaimer:
+Make sure Python is installed, is added to the system's PATH environment variable, and pip is working
 
-Navigate into Miner Folder and run :
+Navigate into Repository folder and run :
 ```bash
-$python -m venv {NameOfYourVirtualEnvironment}
+$python -m venv myenv  # Replace 'myenv' with your desired virtual environment name
 ```
 activate using:
 ```bash
-$source {PathToMiner}/{NameOfYourVirtualEnvironment}/bin/activate
+$source myenv/bin/activate
 ```
-or
+or (alternative for advanced users familiar with the syntax):
 ```bash
-. {PathToMiner}/{NameOfYourVirtualEnvironment}/bin/activate
+. myenv/bin/activate
 ```
+
+> **Note:** Replace `{PathToMiner}` with the full path to the directory where the Miner folder is located. For example, if the Miner folder is in `/home/user/projects`, then `{PathToMiner}` would be `/home/user/projects/Miner`.
 
 
 

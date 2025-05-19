@@ -7,31 +7,56 @@ Senior Project ~ F2024-S2025, PCAP Analysis on IoT Attacks
 
 
 
-## 1) Create virtual environment with python to install pip modules.
+## 1) Create virtual environment with Python & Install pip modules.
 Disclaimer:
 Make sure Python is installed, is added to the system's PATH environment variable, and pip is working
-
-Navigate into Repository folder and run :
+### 🔹 On Linux/macOS:
+Navigate into repository folder and run:
+>**Note:** 'myenv' is the name of the virtual environment, you can change it.
 ```bash
-$python -m venv myenv  # Replace 'myenv' with your desired virtual environment name
+python3 -m venv myvenv
 ```
-activate using:
+Activate using:
 ```bash
-$source myenv/bin/activate
+source myenv/bin/activate
 ```
 or (alternative for advanced users familiar with the syntax):
 ```bash
 . myenv/bin/activate
 ```
+### 🔹 On Windows
+Navigate into repository folder and run:
+>**Note:** 'myenv' is the name of the virtual environment, you can change it.
+```bash
+python -m venv myvenv
+```
+Activate using:
+```bash
+myenv\Scripts\activate
+```
+or (alternative for advanced users familiar with the syntax):
+```bash
+myenv\Scripts\activate.bat
+```
+### 🔹 On Windows (PowerShell)
+Navigate into repository folder and run:
+>**Note:** 'myenv' is the name of the virtual environment, you can change it.
+```bash
+python -m venv myvenv
+```
+Activate using:
+```bash
+myenv\Scripts\Activate.ps1
+```
+or (alternative for advanced users familiar with the syntax):
+```bash
+myenv\Scripts\Activate
+```
 
-> **Note:** Replace `{PathToMiner}` with the full path to the directory where the Miner folder is located. For example, if the Miner folder is in `/home/user/projects`, then `{PathToMiner}` would be `/home/user/projects/Miner`.
-
-
-
-### When in (venv):
+## When in (venv):
 Install pip modules, using:
 ```bash
-$pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 ## Modules that should be installed:
 - dpkt

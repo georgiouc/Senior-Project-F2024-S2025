@@ -5,6 +5,7 @@ This guide will help you set up the environment for running the PCAP analysis on
 
 ## Installation Guide :
 ### 1) Clone the repository from GitHub.
+
 ```bash
 git clone https://github.com/georgiouc/Senior-Project-F2024-S2025.git
 ```
@@ -12,7 +13,7 @@ git clone https://github.com/georgiouc/Senior-Project-F2024-S2025.git
 ```bash
 cd Senior-Project-F2024-S2025
 ```
-### 3) Create a Python virtual environment and install the required pip modules.
+### 3) Create a Python virtual environment 
 
 >Disclaimer: 
 Make sure Python is installed, is added to the system's PATH environment variable, and pip and venv are installed.
@@ -66,12 +67,14 @@ or (alternative for advanced users familiar with the syntax):
 myvenv\Scripts\Activate
 ```
 
-## When in (venv):
+
+### 4) Install the required pip modules
+#### When in (venv):
 Install pip modules, using:
 ```bash
 pip install -r requirements.txt
 ```
-## Modules that should be installed:
+#### Modules that should be installed:
 - dpkt
 - pandas
 - scapy
@@ -85,12 +88,18 @@ pip install -r requirements.txt
 pip list
 ```
 
+>Disclaimer : You can always deactivate the virtual environment by running:
+```bash
+deactivate
+```
+<br>
 
 ----------------------------------------------------------------------------------------
 <br>
 
-# 2) Install tcpdump
-<br>
+### 5) Install  `tcpdump`
+>##### **Note:** `tcpdump` is a command-line packet analyzer tool. It allows you to capture and analyze network packets in real-time.
+
 
 ### Debian/Ubuntu
 ```bash

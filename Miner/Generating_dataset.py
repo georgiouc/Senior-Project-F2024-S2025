@@ -10,6 +10,11 @@ import pandas as pd
 
 if __name__ == '__main__':
 
+    # Ensure required directories exist
+    os.makedirs('split_temp', exist_ok=True)
+    os.makedirs('output', exist_ok=True)
+    
+
     start = time.time()
     print("========== CIC IoT feature extraction ==========")
 

@@ -68,6 +68,17 @@ sudo dnf install -y tcpdump
 ```bash
 brew install tcpdump
 ```
-### Windows (WinDump)
-#### Download from: https://www.winpcap.org/windump/
+<br>
+
+## Windows🪟(WinDump)
+
+ **Download:** [WinDump - Official Site](https://www.winpcap.org/windump/)
+ 
+ #### Disclamer :
+<div style="display: flex; align-items: center;">
+  <img src="image.png" alt="Alt text" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 10px;">
+  <span>It's generally recommended to use <a href="https://learn.microsoft.com/en-us/windows/wsl/">WSL (Windows Subsystem for Linux)</a> instead for better compatibility and tools.</span>
+</div>
+
+
 

@@ -92,10 +92,7 @@ pip list
 ```bash
 deactivate
 ```
-<br>
 
-----------------------------------------------------------------------------------------
-<br>
 
 ### 5) Install  `tcpdump`
 >##### **Note:** `tcpdump` is a command-line packet analyzer tool. It allows you to capture and analyze network packets in real-time.

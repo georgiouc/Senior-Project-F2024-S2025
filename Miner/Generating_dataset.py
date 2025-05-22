@@ -19,7 +19,13 @@ if __name__ == '__main__':
     start = time.time()
     print("========== CIC IoT feature extraction ==========")
 
-    pcapfiles = [os.path.join("../PCAP", f) for f in os.listdir("../PCAP") if f.endswith(".pcap")] #Place your pcap files here.
+    # Recursively find all .pcap files in ../PCAP and subfolders
+    pcapfiles = []
+    for root, dirs, files in os.walk("../PCAP"):
+        for f in files:
+            if f.endswith(".pcap"):
+                pcapfiles.append(os.path.join(root, f))
+
     subfiles_size = 10 # MB
     split_directory = 'split_temp/'
     destination_directory = 'output/'

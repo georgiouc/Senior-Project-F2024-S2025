@@ -91,8 +91,6 @@ pip list
 ```bash
 deactivate
 ```
-
-
 ### 5) Install  `tcpdump`
 >##### **Note:** `tcpdump` is a command-line packet analyzer tool. It allows you to capture and analyze network packets in real-time.
 
@@ -126,4 +124,57 @@ brew install tcpdump
 </div>
 
 
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+
+
+
+## **Usage Instructions**
+
+>Note
+>### 📂 PCAP Folder Structure
+>
+>You can organize your `.pcap` files in any way:
+>
+>- Place them directly in the PCAP folder, **or**
+>- Organize them in subfolders by category (e.g., Benign,> BruteForce, etc.), **or**
+>- Use a mix of both.
+>
+>The framework will automatically find and process all `.pcap` files, regardless of their location.
+>
+>### 🏷️ Automatic Categorization
+>
+>- Categories are detected from both the parent folder name and keywords in the filename.
+>- Output CSVs are moved to category subfolders in CSV and a `metadata.csv` file is generated, listing all categories for each sample.
+><br>
+><br>
+
+### 🚀 How to Use
+
+1. **Place your `.pcap` files** in the PCAP folder.
+2. **Run the main script**:
+    ```bash
+    python3 Miner/pcap_miner.py
+    ```
+3. **View the results**:
+    - The output CSV files will be in the CSV folder.
+    - A `metadata.csv` file will be generated, listing all categories for each sample.
+
+
+
+    
+4. **Analyze the results**:
+    - Use the `analyze.py` script to analyze the generated CSV files.
+    - The script will generate a summary of the analysis and save it in the `analysis` folder.
+5. **Visualize the results**:
+    - Use the `visualize.py` script to visualize the analysis results.
+    - The script will generate various plots and save them in the `visualization` folder.
+6. **Generate reports**:
+    - Use the `report.py` script to generate reports based on the analysis results.
+    - The script will generate a PDF report and save it in the `reports` folder.
 

@@ -1,61 +1,30 @@
-import pandas
+import pandas as pd
 import os
 
-csv_path = "../../CSV/example.csv"
-csv_filename = os.path.basename(csv_path).split(".")[0]
-df = pandas.read_csv(csv_path)
+# Set the input directory to the CSV folder (relative to this script)
+csv_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../CSV'))
+output_dir = os.path.join(os.path.dirname(__file__), 'Occurrences')
+os.makedirs(output_dir, exist_ok=True)
 
-features = [
-    "Header_Length", "Protocol Type", "Time_To_Live", "Rate",
-    "fin_flag_number", "syn_flag_number", "rst_flag_number", "psh_flag_number", "ack_flag_number",
-    "ece_flag_number", "cwr_flag_number", "ack_count", "syn_count", "fin_count", "rst_count",
-    "HTTP", "HTTPS", "DNS", "Telnet", "SMTP", "SSH", "IRC", "TCP", "UDP",
-    "DHCP", "ARP", "ICMP", "IGMP", "IPv", "LLC",
-    "Tot sum", "Min", "Max", "AVG", "Std", "Tot size", "IAT", "Number", "Variance"
-]
+# Process all CSV files in the CSV directory
+for csv_file in os.listdir(csv_dir):
+    if csv_file.endswith('.csv'):
+        csv_path = os.path.join(csv_dir, csv_file)
+        csv_filename = os.path.splitext(csv_file)[0]
+        df = pd.read_csv(csv_path)
 
-occurrence_data = []
+        occurrence_data = []
+        for feature in df.columns:
+            present = df[feature].any()
+            occurrence_data.append([feature, "✓" if present else "✗"])
 
-# Loop through and check for presence
-for feature in features:
-    if feature in df.columns:
-        present = df[feature].any()
-        occurrence_data.append([feature, "✓" if present else "✗"])
-    else:
+        occurrence_df = pd.DataFrame(occurrence_data, columns=["Feature", "Present"])
+        # Output paths
+        occurence_csv_path = os.path.join(output_dir, f"{csv_filename}_occurrence.csv")
+        occurence_tex_path = os.path.join(output_dir, f"{csv_filename}_occurrence.tex")
 
-        occurrence_data.append([feature, "Not present"])
-
-# Convert to table
-occurrence_df = pandas.DataFrame(occurrence_data, columns=["Feature", "Present"])
-
-# Print the table
-print(occurrence_df)
-
-# Create Save Directory
-os.makedirs("Occurrences", exist_ok=True)
-
-# Create Output Path
-occurence_csv_path = f"Occurrences/{csv_filename}_occurrence.csv"
-occurence_tex_path = f"Occurrences/{csv_filename}_occurrence.tex"
-
-# Save to CSV
-occurrence_df.to_csv(occurence_csv_path, index=False)
-
-############################################################################################
-##                              SAVE TO LaTeX                                             ##
-
-# Escape underscores for LaTeX compatibility
-occurrence_df['Feature'] = occurrence_df['Feature'].apply(lambda x: x.replace('_', r'\_'))
-
-# Replace ✓ and ✗ with LaTeX-friendly symbols
-occurrence_df['Present'] = occurrence_df['Present'].replace({'✓': r'\checkmark', '✗': r'\ding{55}'})
-
-# Convert DataFrame to LaTeX
-latex_table = occurrence_df.to_latex(index=False)
-
-# Wrap the table with \resizebox to fit within the page width
-latex_table = "\\resizebox{\\textwidth}{!}{" + latex_table + "}"
-
-# Save the LaTeX table to the .tex file
-with open(occurence_tex_path, 'w') as f:
-    f.write(latex_table)
+        # Save to CSV
+        occurrence_df.to_csv(occurence_csv_path, index=False)
+        # Only print the plain text table to the console
+        print(f"\n{csv_file} Feature Occurrence Table:")
+        print(occurrence_df.to_string(index=True))

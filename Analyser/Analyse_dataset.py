@@ -17,9 +17,10 @@ os.makedirs(OCCURRENCES_DIR, exist_ok=True)
 os.makedirs(COMPARISON_DIR, exist_ok=True)
 os.makedirs(PLOTS_DIR, exist_ok=True)
 
-# Update local tool paths to output to Feature_Analysis subfolders
+# Update local tool paths to output to Analysis subfolders
 OCCURRENCE_CHECKER = os.path.join(os.path.dirname(__file__), 'Occurrence_Checker_CSV.py')
 FEATURE_COMPARATOR = os.path.join(os.path.dirname(__file__), 'FeatureComp_v1.1.py')
+
 
 def run_occurrence_checker(output_tex=False):
     print(f"[INFO] Running Feature Occurrence Checker on all CSVs in {MAIN_CSV_DIR}...")

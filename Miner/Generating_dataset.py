@@ -12,24 +12,24 @@ import shutil
 if __name__ == '__main__':
 
     # Ensure required directories exist
-    os.makedirs('split_temp', exist_ok=True)
-    os.makedirs('output', exist_ok=True)
-    
+    os.makedirs('Miner/split_temp', exist_ok=True)
+    os.makedirs('Miner/output', exist_ok=True)
+
 
     start = time.time()
     print("========== CIC IoT feature extraction ==========")
 
     # Recursively find all .pcap files in ../PCAP and subfolders
     pcapfiles = []
-    for root, dirs, files in os.walk("../PCAP"):
+    for root, dirs, files in os.walk("PCAP/"):
         for f in files:
             if f.endswith(".pcap"):
                 pcapfiles.append(os.path.join(root, f))
 
     subfiles_size = 10 # MB
-    split_directory = 'split_temp/'
-    destination_directory = 'output/'
-    converted_csv_files_directory = 'csv_files/'
+    split_directory = 'Miner/split_temp/'
+    destination_directory = 'Miner/output/'
+    converted_csv_files_directory = 'Miner/csv_files/'
     n_threads = 8
 
     address = "./"
@@ -77,7 +77,7 @@ if __name__ == '__main__':
         for f in tqdm(csv_subfiles):
             try:
                 d = pd.read_csv(destination_directory + f)
-                d.to_csv("../CSV/" + os.path.basename(pcap_file).split('.')[0] + '.csv', header=mode=='w', index=False, mode=mode)
+                d.to_csv("CSV/" + os.path.basename(pcap_file).split('.')[0] + '.csv', header=mode=='w', index=False, mode=mode)
                 mode='a'
             except:
                 pass

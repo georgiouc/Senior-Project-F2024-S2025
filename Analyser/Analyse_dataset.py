@@ -4,13 +4,18 @@ import subprocess
 import argparse
 import shutil
 
+# Import the bar plotter functionality
+from FeatureBarPlotter import plot_feature_bars
+
 # Default input/output
-MAIN_CSV_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../CSV'))
-ANALYSIS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../Feature_Analysis'))
+MAIN_CSV_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../CSV/'))
+ANALYSIS_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Analysis/'))
 OCCURRENCES_DIR = os.path.join(ANALYSIS_DIR, 'Occurrences')
 COMPARISON_DIR = os.path.join(ANALYSIS_DIR, 'Comparison')
+PLOTS_DIR = os.path.join(ANALYSIS_DIR, 'Plots')
 os.makedirs(OCCURRENCES_DIR, exist_ok=True)
 os.makedirs(COMPARISON_DIR, exist_ok=True)
+os.makedirs(PLOTS_DIR, exist_ok=True)
 
 # Update local tool paths to output to Feature_Analysis subfolders
 OCCURRENCE_CHECKER = os.path.join(os.path.dirname(__file__), 'Occurrence_Checker_CSV.py')
@@ -37,6 +42,15 @@ def run_feature_comparator(base_csv, compare_csv, output_tex=False):
         cmd.append('--tex')
     subprocess.run(cmd, check=True)
 
+def run_bar_plotter(base_csv, compare_csv):
+    print(f"[INFO] Generating feature comparison bar charts...")
+    try:
+        plot_feature_bars(base_csv, compare_csv, PLOTS_DIR)
+    except Exception as e:
+        print(f"[ERROR] Failed to generate bar charts: {e}")
+        return False
+    return True
+
 def resolve_csv_path(filename):
     # If the filename is an absolute or relative path and exists, use it as-is
     if os.path.isabs(filename) and os.path.exists(filename):
@@ -53,6 +67,7 @@ def main():
     parser.add_argument('--base', type=str, required=True, help='Path to the baseline (benign) CSV file.')
     parser.add_argument('--compare', type=str, required=True, help='Path to the attack or comparison CSV file.')
     parser.add_argument('--tex', action='store_true', help='Also output LaTeX table for feature comparison and occurrences.')
+    parser.add_argument('--visualize', action='store_true', help='Generate bar charts comparing features between datasets.')
     args = parser.parse_args()
 
     # 1. Run occurrence checker on all CSVs in the main CSV dir
@@ -62,6 +77,12 @@ def main():
     base_csv = resolve_csv_path(args.base)
     compare_csv = resolve_csv_path(args.compare)
     run_feature_comparator(base_csv, compare_csv, output_tex=args.tex)
+
+    # 3. Generate bar charts if visualization is requested
+    if args.visualize:
+        success = run_bar_plotter(base_csv, compare_csv)
+        if success:
+            print(f"📊 [INFO] Bar charts saved to {PLOTS_DIR}/")
 
     print(f"[DONE] Feature analysis complete. See {OCCURRENCES_DIR}/ and {COMPARISON_DIR}/ for results.")
 

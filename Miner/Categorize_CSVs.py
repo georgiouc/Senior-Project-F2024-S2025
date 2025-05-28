@@ -3,7 +3,8 @@ import shutil
 
 # === CONFIGURABLE: Add or edit categories/keywords here ===
 CATEGORY_KEYWORDS = {
-    'DDoS': ['ddos', 'dos'],
+    'DDoS': ['ddos', 'distributed denial of service'],
+    'DoS': ['dos', 'denial of service'],
     'Botnet': ['botnet'],
     'BruteForce': ['bruteforce', 'brute', 'force'],
     'Malware': ['malware'],
@@ -31,13 +32,13 @@ CATEGORY_KEYWORDS = {
     'Telnet': ['telnet'],
     'SSH': ['ssh'],
     'SMTP': ['smtp'],
-    
+
 
     # Add more categories/keywords as needed
 }
 
-PCAP_DIR = '../PCAP/'
-CSV_DIR = '../CSV/'
+PCAP_DIR = 'PCAP/'
+CSV_DIR = 'CSV/'
 
 
 def get_category(filename):

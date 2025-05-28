@@ -13,7 +13,7 @@ git clone https://github.com/georgiouc/Senior-Project-F2024-S2025.git
 ```bash
 cd Senior-Project-F2024-S2025
 ```
->Disclaimer: 
+>**Disclaimer**: 
 Make sure Python is installed, is added to the system's PATH environment variable, and pip and venv are also installed.
 <br>**Note:** If you are on Linux, you may need to install the `python3-pip` & `python3-venv` package using your package manager. For example, on Ubuntu, you can run:
 >```bash
@@ -80,6 +80,7 @@ pip install -r requirements.txt
 - scipy
 - tqdm
 - Jinja2
+- matplotlib
 
 #### To check installed modules, run:
 
@@ -92,12 +93,14 @@ pip list
 deactivate
 ```
 ### 5) Install  `tcpdump`
->##### **Note:** `tcpdump` is a command-line packet analyzer tool. It allows you to capture and analyze network packets in real-time.
+
+
+>##### **Note:** `tcpdump` is a command-line packet analyzer tool. It allows you to capture and analyze network packets in real-time, in this context we use it to split pcap files. Please make sure to update your system's package manager before installing `tcpdump` to ensure you get the latest version.
 
 
 ### Debian/Ubuntu
 ```bash
-sudo apt update && sudo apt install -y tcpdump
+sudo apt install -y tcpdump
 ```
 ### Arch Linux
 ```bash
@@ -117,7 +120,7 @@ brew install tcpdump
 
  **Download:** [WinDump - Official Site](https://www.winpcap.org/windump/)
  
- #### Disclamer :
+ #### **Disclamer** :
 <div style="display: flex; align-items: center;">
   <img src="image.png" alt="Alt text" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 10px;">
   <span>It's generally recommended to use <a href="https://learn.microsoft.com/en-us/windows/wsl/">WSL (Windows Subsystem for Linux)</a> instead for better compatibility and tools.</span>
@@ -136,16 +139,17 @@ brew install tcpdump
 
 ## **Usage Instructions**
 
->Note
+>**Note** : The following instructions assume you have already set up the environment and installed the required dependencies as per the installation guide above.
 >### 📂 PCAP Folder Structure
 >
 >You can organize your `.pcap` files in any way:
 >
->- Place them directly in the PCAP folder, **or**
->- Organize them in subfolders by category (e.g., Benign,> BruteForce, etc.), **or**
+>- Place them directly in the "PCAP" folder, **or**
+>- Organize them in subfolders by category (e.g., Benign, BruteForce, etc.), **or**
 >- Use a mix of both.
 >
->The framework will automatically find and process all `.pcap` files, regardless of their location.
+>**Be aware :** Our script will automatically detect the `.pcap` files in the "PCAP" folder and its subfolders, so you can organize them as you like.
+>
 >
 >### 🏷️ Automatic Categorization
 >
@@ -156,25 +160,51 @@ brew install tcpdump
 
 ### 🚀 How to Use
 
-1. **Place your `.pcap` files** in the PCAP folder.
-2. **Run the main script**:
+1. **Generate the dataset**
+    - Run the following command in your terminal or command prompt:
     ```bash
-    python3 Miner/pcap_miner.py
+    python3 Miner/Generate_dataset.py
     ```
-3. **View the results**:
+
+    - This script will process all `.pcap` files in the "PCAP" folder and its subfolders.
+    - It will generate CSV files for each category and save them in the "CSV" folder.
+    - A `metadata.csv` file will be created, listing all categories for each sample.
+2. **View the results**:
     - The output CSV files will be in the CSV folder.
     - A `metadata.csv` file will be generated, listing all categories for each sample.
-
-
-
     
-4. **Analyze the results**:
-    - Use the `analyze.py` script to analyze the generated CSV files.
-    - The script will generate a summary of the analysis and save it in the `analysis` folder.
-5. **Visualize the results**:
-    - Use the `visualize.py` script to visualize the analysis results.
-    - The script will generate various plots and save them in the `visualization` folder.
-6. **Generate reports**:
+3. **Analyze the dataset (Optional)**:
+
+    **Options:**
+    - `--base`: Base CSV file for comparison (required)
+    - `--compare`: CSV file to compare against base (required)  
+    - `--tex`: Generate LaTeX tables alongside CSV files
+
+    **Example:**
+    ```bash
+    python3 Analyser/Analyse_dataset.py --base Benign.csv --compare Attack.csv --tex 
+    ```
+
+    **What it generates:**
+    - Feature occurrence analysis for all CSVs ( + LaTeX if `--tex` used)
+    - Feature comparison between specified files ( + LaTeX if `--tex` used)
+
+    **Results location:**
+    - All analysis results are saved in `Analysis/`
+    - Occurrence data: `Analysis/Occurrences/`
+    - Comparison data: `Analysis/Comparison/`
+
+    >**Note:** To specify a .csv file use the CSV/ and then tab key to autocomplete the file name.
+
+4. **Visualize the dataset**:
+    -Use the `--visualize` flag to visualize the analysis results.
+    - Example command:
+    ```bash
+    python3 Analyser/Analyse_dataset.py --base BenignTraffic.csv --compare DDoS-ACK_Fragmentation.csv --visualize
+    ```
+    - This will generate various plots and save them in the `Analysis/Plots` folder, based on magnitude.
+
+5. **Generate reports (coming soon)**:
     - Use the `report.py` script to generate reports based on the analysis results.
     - The script will generate a PDF report and save it in the `reports` folder.
 

@@ -60,10 +60,10 @@ def get_category_from_path(filepath):
     for category in CATEGORY_KEYWORDS:
         if parent == category.lower():
             categories.add(category)
-    # Check if parent folder matches any keyword for any category (case-insensitive)
+    # Check if parent folder contains any keyword for any category (case-insensitive)
     for category, keywords in CATEGORY_KEYWORDS.items():
         for kw in keywords:
-            if parent == kw.strip().lower():
+            if kw.strip().lower() in parent:  # Changed from == to 'in'
                 categories.add(category)
     # Check filename for keywords (case-insensitive)
     fname = os.path.basename(filepath).strip().lower()
